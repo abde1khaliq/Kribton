@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anakonda.py"
+version = "1.0.0"
+authors = [
+  { name="Ahmed Abdelkhaliq", email="abdelkhaliqqq@gmail.com" },
+]
+description = "A high-performance web framework for Python."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+konda-admin = "anakonda.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["anakonda*"]
