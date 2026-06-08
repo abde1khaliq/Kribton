@@ -1,4 +1,6 @@
-from .route import Route
+from anakonda.route import Route
+from anakonda.request import Request
+from anakonda.response import Response
 
 class Konda:
     def __init__(self, title=None, description=None):
@@ -15,19 +17,14 @@ class Konda:
         self.routes.append(Route(path, handler))
 
     async def __call__(self, scope, receive, send):
+        request = Request(scope, receive)
+
         for route in self.routes:
             if route.matches(scope):
-                await route.handler(scope, receive, send)
+                response = await route.handler(request)
+                await response.send(send)
+                return
 
-        await send({
-                "type": "http.response.start",
-                "status": 404,
-                "headers": [
-                    [b'content-type', b'text/plain']
-                ]
-            })
 
-        await send({
-            "type": "http.response.body",
-            "body": b'Not Found.'
-        })
+        response = Response("Not Found", status=404)
+        await response.send(send)
