@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [project.scripts]
-konda-admin = "anakonda.cli.main:main"
+konda-admin = "cli.main:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
