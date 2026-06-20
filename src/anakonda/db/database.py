@@ -1,31 +1,17 @@
+# sync_db.py
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
+from .base import BaseDatabaseConfig
 
-class Database:
-    def __init__(
-        self,
-        url: str,
-        pool_size: int = 5,
-        max_overflow: int = 10,
-        pool_timeout: int = 30,
-        pool_recycle: int = 1800,
-        echo: bool = False,
-    ):
-        self._engine = create_engine(
-            url,
-            pool_size=pool_size,
-            max_overflow=max_overflow,
-            pool_timeout=pool_timeout,
-            pool_recycle=pool_recycle,
-            pool_pre_ping=True,
-            echo=echo,
-        )
 
+class Database(BaseDatabaseConfig):
+    def __init__(self, url: str, **kwargs):
+        super().__init__(url, **kwargs)
+        self._engine = create_engine(self.url, **self._engine_kwargs())
         self._session_factory = sessionmaker(bind=self._engine, expire_on_commit=False)
 
     def session(self):
-        """Context-managed sync session."""
         session = self._session_factory()
         try:
             yield session
