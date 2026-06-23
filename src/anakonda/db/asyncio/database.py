@@ -1,11 +1,10 @@
 from contextlib import asynccontextmanager
-
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from anakonda.db.asyncio.querymanager import AsyncQueryManager
-from anakonda.db.base_databaseconfig import BaseDatabaseConfig
-from anakonda.models.base import Model
+from anakonda.db.asyncio.query_manager import AsyncQueryManager
+from anakonda.db.base_database import BaseDatabaseConfig
+from anakonda.models.base import BaseModel
 
 
 class AsyncDatabase(BaseDatabaseConfig):
@@ -16,7 +15,7 @@ class AsyncDatabase(BaseDatabaseConfig):
             self._engine, expire_on_commit=False, class_=AsyncSession
         )
 
-        Model._db = self
+        BaseModel._db = self
 
     def _make_manager(self, cls):
         return AsyncQueryManager(cls, self)

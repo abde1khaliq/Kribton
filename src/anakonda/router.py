@@ -1,4 +1,4 @@
-from .route import Route
+from anakonda.route import Route
 
 
 class Router:
