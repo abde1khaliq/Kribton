@@ -2,15 +2,15 @@ import time
 from pathlib import Path
 from typing import Optional
 
-import typer
 import questionary
+import typer
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.tree import Tree
 
-from cli.style import console, Q_STYLE
 from cli.build import build
 from cli.scaffold import SCAFFOLD
+from cli.style import Q_STYLE, console
 
 
 def _header() -> None:
@@ -53,35 +53,18 @@ def run_init(project_name: Optional[str]) -> None:
     if not project_name:
         raise typer.Exit()
 
-    database = questionary.select(
-        "Database",
-        choices=["PostgreSQL", "MySQL", "SQLite"],
-        style=Q_STYLE,
-    ).ask()
-
-    extensions = questionary.checkbox(
-        "Extensions  [dim](space to select)[/dim]",
-        choices=[
-            questionary.Choice("Redis cache",       value="cache"),
-            questionary.Choice("Background queue",  value="queue"),
-            questionary.Choice("Auth (JWT)",        value="auth"),
-            questionary.Choice("File storage (S3)", value="storage"),
-        ],
-        style=Q_STYLE,
-    ).ask()
-
     console.print()
 
     project_path = Path.cwd() / project_name
 
     if project_path.exists():
-        console.print(f"  [error]✕[/error]  [bold]{project_name}[/bold] already exists\n")
+        console.print(
+            f"  [error]✕[/error]  [bold]{project_name}[/bold] already exists\n"
+        )
         raise typer.Exit(1)
 
     context = {
         "project_name": project_name,
-        "database":     database,
-        "extensions":   extensions or [],
     }
 
     start = time.monotonic()
@@ -116,10 +99,5 @@ def run_init(project_name: Optional[str]) -> None:
 
     console.print(tree)
     console.print()
-
-    if extensions:
-        ext_str = "  ".join(extensions)
-        console.print(f"  [success]✓[/success]  Extensions: [muted]{ext_str}[/muted]")
-        console.print()
 
     _next_steps(project_name)
