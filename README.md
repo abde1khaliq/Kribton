@@ -1,13 +1,13 @@
 
-![Logo](https://ik.imagekit.io/cin2tn3bj/anakonda_logo.png)
-## Anakonda - A performative Python Web Framework
+![Logo](https://ik.imagekit.io/cin2tn3bj/kribton_logo_white.png)
+## Kribton - A performative Python Web Framework
 
-Anakonda is a modern, high-performance, web framework for building APIs with Python.
+Kribton is a modern, high-performance, web framework for building APIs with Python.
 
 ## Features
 
 - **Lighting Fast**: Very high performance.
-- **Auto Documentation**: You register endpoints, Anakonda generates the documenations.
+- **Auto Documentation**: You register endpoints, Kribton generates the documenations.
 - **Easy**: Designed to be easy to use and learn, easy documentation.
 - **Friendly**: Coming from Django, FastAPI or even Flask? still suitable for you.
 
@@ -16,16 +16,16 @@ Anakonda is a modern, high-performance, web framework for building APIs with Pyt
 Just run the pip command and you're all set!
 
 ```bash
-pip install anakonda.py
+pip install kribton.py
 ```
 
 
 ## Usage/Examples
 
-Creating a project using Anakonda
+Creating a project using Kribton
 
 ```bash
-konda-admin init
+kribton init
 ```
 ## Authors
 

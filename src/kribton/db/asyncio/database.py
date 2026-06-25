@@ -2,9 +2,9 @@ from contextlib import asynccontextmanager
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from anakonda.db.asyncio.query_manager import AsyncQueryManager
-from anakonda.db.base_database import BaseDatabaseConfig
-from anakonda.models.base import BaseModel
+from kribton.db.asyncio.query_manager import AsyncQueryManager
+from kribton.db.base_database import BaseDatabaseConfig
+from kribton.models.base import BaseModel
 
 
 class AsyncDatabase(BaseDatabaseConfig):

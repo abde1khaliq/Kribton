@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from anakonda.db.base_query_manager import BaseQueryManager
+from kribton.db.base_query_manager import BaseQueryManager
 
 class AsyncQueryManager(BaseQueryManager):
     async def all(self):

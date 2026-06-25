@@ -1,4 +1,4 @@
-name: Anakonda
+name: Kribton
 on:
   push:
     branches:

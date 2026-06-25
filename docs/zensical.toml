@@ -1,21 +1,21 @@
 [project]
-site_name = "Anakonda"
+site_name = "Kribton"
 site_description = "A fast, performative Python web framework"
 site_author = "Ahmed Abdelkhaliq"
 #site_url = "https://www.example.com/"
 copyright = """
-Copyright &copy; 2026 Anakonda
+Copyright &copy; 2026 Kribton
 """
-repo_url="https://github.com/abde1khaliq/anakonda"
-repo_name="anakonda/anakonda"
+repo_url="https://github.com/abde1khaliq/kribton"
+repo_name="kribton/kribton"
 
 nav = [
   {"Overview" = "index.md"},
 ]
 
 [project.theme]
-favicon = "https://ik.imagekit.io/cin2tn3bj/anakonda_favicon.png"
-logo = "https://ik.imagekit.io/cin2tn3bj/anakonda_favicon.png"
+favicon = "https://ik.imagekit.io/cin2tn3bj/kribton_favicon.png"
+logo = "https://ik.imagekit.io/cin2tn3bj/kribton_favicon.png"
 
 [project.extra_css]
 files = ["assets/css/custom.css"]
@@ -72,7 +72,7 @@ toggle.name = "Switch to light mode"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/abde1khaliq/anakonda"
+link = "https://github.com/abde1khaliq/kribton"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"

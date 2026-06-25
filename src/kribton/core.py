@@ -1,6 +1,6 @@
-from anakonda.request import Request
-from anakonda.response import Response
-from anakonda.route import Route
+from kribton.request import Request
+from kribton.response import Response
+from kribton.route import Route
 
 
 class Konda:

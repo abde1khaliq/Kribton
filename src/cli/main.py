@@ -11,7 +11,7 @@ app = typer.Typer(
     add_completion=False,
     rich_markup_mode="rich",
     pretty_exceptions_enable=False,
-    help="Anakonda",
+    help="Kribton",
 )
 
 new_app = typer.Typer(
