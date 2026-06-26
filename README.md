@@ -19,14 +19,6 @@ Just run the pip command and you're all set!
 pip install kribton
 ```
 
-
-## Usage/Examples
-
-Creating a project using Kribton
-
-```bash
-kribton init
-```
 ## Authors
 
 - [@abde1khaliq](https://www.github.com/abde1khaliq)
