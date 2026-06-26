@@ -33,9 +33,4 @@ Kribton is built directly on the [ASGI](https://asgi.readthedocs.io/) specificat
 pip install kribton
 ```
 
-Kribton comes in with a built-in CLI (command-line interface) for the framework to ease the use, so to confirm the installation was successful, run:
-```bash
-kribton
-```
-
 Now you're all set, it's installed on your machine!
