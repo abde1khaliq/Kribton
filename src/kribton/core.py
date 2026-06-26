@@ -3,7 +3,7 @@ from kribton.response import Response
 from kribton.route import Route
 
 
-class Konda:
+class Kribton:
     def __init__(self, title=None, description=None):
         self.title = title
         self.description = description
