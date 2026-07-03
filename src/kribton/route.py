@@ -1,77 +1,59 @@
-import re
-import uuid
+"""A single path/handler binding.
+
+Defines :class:`Route`, the smallest routing unit in the framework: a path,
+an async handler, and the HTTP methods it responds to.
+
+Used by:
+    - :class:`kribton.core.Kribton` — creates a ``Route`` in
+      :meth:`~kribton.core.Kribton.add_route`, and matches against every
+      route in :meth:`~kribton.core.Kribton.__call__`.
+    - :class:`kribton.router.Router` — creates a ``Route`` in
+      :meth:`~kribton.router.Router.append_route`.
+"""
 
 
 class Route:
-    CONVERTERS = {
-        "str": {
-            "pattern": r"[^/]+",
-            "convert": lambda v: v,
-        },
-        "int": {
-            "pattern": r"-?\d+",
-            "convert": lambda v: int(v),
-        },
-        "float": {
-            "pattern": r"-?\d+(?:\.\d+)?",
-            "convert": lambda v: float(v),
-        },
-        "uuid": {
-            "pattern": r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
-            "convert": lambda v: uuid.UUID(v),
-        },
-        "path": {
-            "pattern": r".+",
-            "convert": lambda v: v,
-        },
-    }
+    """A single URL path bound to an async handler.
+
+    Example:
+        >>> async def create_item(request):
+        ...     return Response({"ok": True}, status=201)
+        >>> route = Route("/items", create_item, methods=["POST"])
+    """
 
     def __init__(self, path, handler, methods=None):
+        """Create a route.
+
+        Args:
+            path: Exact URL path to match, e.g. ``"/items"``. Matching is a
+                strict string comparison — no path parameters are parsed
+                here.
+            handler: Async callable taking a
+                :class:`~kribton.request.Request` and returning a
+                :class:`~kribton.response.Response`.
+            methods: HTTP methods this route responds to, e.g.
+                ``["GET", "POST"]``. Defaults to ``["GET"]`` when omitted or
+                falsy.
+        """
         self.path = path
         self.handler = handler
         self.methods = methods or ["GET"]
-        self._pattern, self._param_converters = self._compile(path)
-
-    @classmethod
-    def _compile(cls, path):
-        param_converters = {}
-        pattern_parts = []
-        for segment in path.split("/"):
-            if segment.startswith("{") and segment.endswith("}"):
-                spec = segment[1:-1]
-                if ":" in spec:
-                    name, type_name = spec.split(":", 1)
-                else:
-                    name, type_name = spec, "str"
-
-                if type_name not in cls.CONVERTERS:
-                    raise ValueError(
-                        f"Unknown path parameter type '{type_name}' for '{{{spec}}}'. "
-                        f"Available types: {', '.join(cls.CONVERTERS)}"
-                    )
-
-                converter = cls.CONVERTERS[type_name]
-                param_converters[name] = converter["convert"]
-                pattern_parts.append(
-                    r"(?P<%s>%s)" % (re.escape(name), converter["pattern"])
-                )
-            else:
-                pattern_parts.append(re.escape(segment))
-        pattern = "^" + "/".join(pattern_parts) + "$"
-        return re.compile(pattern), param_converters
 
     def matches(self, scope):
-        return (
-            scope["method"].upper() in self.methods
-            and self._pattern.match(scope["path"]) is not None
-        )
+        """Check whether an ASGI scope matches this route.
 
-    def extract_params(self, scope):
-        match = self._pattern.match(scope["path"])
-        if not match:
-            return {}
-        raw = match.groupdict()
-        return {
-            name: self._param_converters[name](value)
-            for name, value in raw.items()
-        }
+        Compares ``scope["path"]`` for an exact match against ``self.path``,
+        and checks that the uppercased ``scope["method"]`` is in
+        ``self.methods``.
+
+        Args:
+            scope: The ASGI connection scope, as passed to
+                :meth:`kribton.core.Kribton.__call__`.
+
+        Returns:
+            bool: ``True`` if both the path and method match.
+        """
+        return (
+            self.path == scope["path"]
+            and scope["method"].upper() in self.methods
+        )
