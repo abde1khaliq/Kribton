@@ -20,7 +20,7 @@ icon: lucide/rocket
 
 ## Kribton
 
-Kribton is a lightning‑fast Python web framework built for developers who want to create APIs and web applications effortlessly. It combines speed with a clean, intuitive file structure, so you can focus on building instead of boilerplate. Take a look at how simple its syntax can be.
+Kribton is a lightning‑fast Python web framework built for developers who want to create APIs and web applications effortlessly so you can focus on building instead of boilerplate. Take a look at how simple its syntax can be.
 
 ## A minute of context
 

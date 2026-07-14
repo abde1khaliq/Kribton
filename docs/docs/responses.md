@@ -20,7 +20,5 @@ async def created(request):
     return Response({"id": 1}, status=201)
 
 async def plain_text(request):
-    return Response("ok", headers=[(b"content-type", b"text/plain; charset=utf-8")])
+    return Response("ok", headers=[(b"content-type", b"text/plain; charset=utf-8")]) # headers has to be in binary.
 ```
-
-`await response.send(send)` emits the ASGI `http.response.start` / `http.response.body` messages — this is called automatically by `Kribton.__call__` for whatever your handler returns.

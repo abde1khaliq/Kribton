@@ -4,7 +4,8 @@ icon: lucide/list
 
 # Query Managers
 
-- `BaseQueryManager` simply pairs a `model` with its `db` connection — the base class all query managers build on.
+Kribton features it's own Query manager built on top of SQLalchemy to ease the database data querying.
+
 - `AsyncQueryManager` (used automatically by `AsyncDatabase`) currently provides:
     - `await Model.objects.all()` — `SELECT` over all rows, returned as a list of plain dicts.
     - `await Model.objects.filter(**kwargs)` — equality-filtered `SELECT`, AND-combining every keyword argument. Returns a list (empty if nothing matches).
@@ -45,48 +46,6 @@ deleted = await Task.objects.delete(1)
 # True if a row was removed, False if id=1 didn't exist
 ```
 
-## Full example: a task manager route set
-
-```python
-from kribton import Router, Response
-
-router = Router()
-
-async def list_tasks(request):
-    tasks = await Task.objects.all()
-    return Response(tasks)
-
-async def get_task(request):
-    task = await Task.objects.get(id=request.path_params["id"])
-    if task is None:
-        return Response({"error": "not found"}, status=404)
-    return Response(task)
-
-async def create_task(request):
-    data = await request.json()
-    task = await Task.objects.create(title=data["title"])
-    return Response(task, status=201)
-
-async def update_task(request):
-    data = await request.json()
-    task = await Task.objects.update(request.path_params["id"], **data)
-    if task is None:
-        return Response({"error": "not found"}, status=404)
-    return Response(task)
-
-async def delete_task(request):
-    deleted = await Task.objects.delete(request.path_params["id"])
-    if not deleted:
-        return Response({"error": "not found"}, status=404)
-    return Response(None, status=204)
-
-router.append_route("/tasks", list_tasks, methods=["GET"])
-router.append_route("/tasks", create_task, methods=["POST"])
-router.append_route("/tasks/{id:int}", get_task, methods=["GET"])
-router.append_route("/tasks/{id:int}", update_task, methods=["PATCH"])
-router.append_route("/tasks/{id:int}", delete_task, methods=["DELETE"])
-```
-
 ## Notes and limitations
 
 - **Single-column primary keys only.** `update()` and `delete()` reflect the model's primary key automatically, but raise `NotImplementedError` for composite primary keys.
@@ -94,13 +53,3 @@ router.append_route("/tasks/{id:int}", delete_task, methods=["DELETE"])
 - **Unknown fields fail fast.** Passing a keyword that isn't a real column to `create`, `update`, `filter`, or `get` raises `AttributeError` immediately rather than silently doing nothing.
 - **No bulk operations.** Each `create`/`update`/`delete` call affects exactly one row. There's no `bulk_create()` or `update_many()`/`delete_many()` yet.
 - **For anything beyond equality filters or pk-based updates** (joins, `LIKE`, `IN`, bulk operations, ordering), drop to a raw session via `Model._db.session()`:
-
-```python
-from sqlalchemy import select, update
-
-async def mark_overdue_done(session_model):
-    async with Task._db.session() as session:
-        await session.execute(
-            update(Task).where(Task.title.ilike("%urgent%")).values(done=True)
-        )
-```

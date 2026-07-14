@@ -6,7 +6,7 @@ icon: lucide/check-square
 
 This walks through building a small but complete task manager API with Kribton — covering routing, path parameters, the database layer, models, and full CRUD through query managers. By the end you'll have working `GET`/`POST`/`PATCH`/`DELETE` endpoints backed by SQLite.
 
-If you haven't read **[Getting Started](getting-started.md)** yet, do that first — this tutorial assumes Kribton is already installed.
+If you haven't read **[Getting Started](getting-started.md)** yet, do that first, this tutorial assumes Kribton is already installed.
 
 ## 1. Project setup
 
@@ -60,7 +60,7 @@ async def get_task(request):
     return Response(task)
 ```
 
-`{id:int}` in the route path (see step 8) means `request.path_params["id"]` arrives already converted to an `int` — no manual casting needed. See **[Routing](routing.md)**.
+`{id:int}` in the route path (see step 8) means `request.path_params["id"]` arrives already converted to an `int`, no manual casting needed. See **[Routing](routing.md)**.
 
 ## 5. Create a task
 
@@ -102,7 +102,7 @@ async def delete_task(request):
 ```
 
 !!! warning
-    `update_task` passes the request body straight into `.update(**data)`. If the client sends a field that isn't a real column on `Task`, this raises `AttributeError` — which is why it's caught explicitly above. Kribton doesn't have global exception-handling middleware yet, so unhandled errors elsewhere will still surface as a generic failure.
+    `update_task` passes the request body straight into `.update(**data)`. If the client sends a field that isn't a real column on `Task`, this raises `AttributeError`,  which is why it's caught explicitly above. Kribton doesn't have global exception-handling middleware yet, so unhandled errors elsewhere will still surface as a generic failure.
 
 ## 7. Set up the database
 
