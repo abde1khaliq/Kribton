@@ -7,7 +7,6 @@ Kribton is a modern, high-performance, web framework for building APIs with Pyth
 ## Features
 
 - **Lighting Fast**: Very high performance.
-- **Auto Documentation**: You register endpoints, Kribton generates the documenations.
 - **Easy**: Designed to be easy to use and learn, easy documentation.
 - **Friendly**: Coming from Django, FastAPI or even Flask? still suitable for you.
 
